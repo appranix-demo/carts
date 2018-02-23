@@ -1,9 +1,9 @@
 node {
    stage('Build') {
-         git 'https://github.com/veereshwaran/shipping/'
+         git 'https://github.com/veereshwaran/carts/'
          sh 'mvn -DskipTests package'
          sh "echo build docker"
-         sh "docker build -t veeresh27/shipping:${env.BUILD_ID} ."
+         sh "docker build -t veeresh27/carts:${env.BUILD_ID} ."
    }
 
    stage('Publish docker') {
@@ -11,8 +11,8 @@ node {
                             usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
           sh "echo push docker"
           sh "docker login -u ${env.USERNAME} -p ${env.PASSWORD}"
-          sh "docker push veeresh27/shipping:${env.BUILD_ID}"
-          sh "docker rmi veeresh27/shipping:${env.BUILD_ID}"
+          sh "docker push veeresh27/carts:${env.BUILD_ID}"
+          sh "docker rmi veeresh27/carts:${env.BUILD_ID}"
         }
    }
 
