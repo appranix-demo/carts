@@ -1,20 +1,26 @@
 package works.weave.socks.cart.entities;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document
+@Entity
 public class Cart {
     @NotNull
     public String customerId; // Public instead of getters/setters.
+
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    @DBRef
+
+    @Convert(converter = HashMapConverter.class)
     private List<Item> items = new ArrayList<>();
 
     public Cart(String customerId) {

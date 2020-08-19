@@ -1,18 +1,25 @@
 package works.weave.socks.cart.entities;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-@Document
+@Entity
 public class Item {
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
     @NotNull(message = "Item Id must not be null")
     private String itemId;
+
     private int quantity;
+
     private float unitPrice;
 
     public Item(String id, String itemId, int quantity, float unitPrice) {

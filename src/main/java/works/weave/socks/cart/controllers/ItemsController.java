@@ -32,7 +32,7 @@ public class ItemsController {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/{itemId:.*}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public Item get(@PathVariable String customerId, @PathVariable String itemId) {
-        return new FoundItem(() -> getItems(customerId), () -> new Item(itemId)).get();
+        return new FoundItem(cartsController.get(customerId).contents(), new Item(itemId)).get();
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -45,7 +45,7 @@ public class ItemsController {
     @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public Item addToCart(@PathVariable String customerId, @RequestBody Item item) {
         // If the item does not exist in the cart, create new one in the repository.
-        FoundItem foundItem = new FoundItem(() -> cartsController.get(customerId).contents(), () -> item);
+        FoundItem foundItem = new FoundItem(cartsController.get(customerId).contents(), item);
         if (!foundItem.hasItem()) {
             Supplier<Item> newItem = new ItemResource(itemDAO, () -> item).create();
             LOG.debug("Did not find item. Creating item for user: " + customerId + ", " + newItem.get());
@@ -62,7 +62,7 @@ public class ItemsController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @RequestMapping(value = "/{itemId:.*}", method = RequestMethod.DELETE)
     public void removeItem(@PathVariable String customerId, @PathVariable String itemId) {
-        FoundItem foundItem = new FoundItem(() -> getItems(customerId), () -> new Item(itemId));
+        FoundItem foundItem = new FoundItem(cartsController.get(customerId).contents(), new Item(itemId));
         Item item = foundItem.get();
 
         LOG.debug("Removing item from cart: " + item);

@@ -22,7 +22,8 @@ public class CartsController {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
     public Cart get(@PathVariable String customerId) {
-        return new CartResource(cartDAO, customerId).value().get();
+        Cart cart = new CartResource(cartDAO, customerId).value().get();
+        return cart;
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)

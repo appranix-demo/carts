@@ -1,10 +1,10 @@
 package works.weave.socks.cart.repositories;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import works.weave.socks.cart.entities.Item;
 
-@RepositoryRestResource
-public interface ItemRepository extends MongoRepository<Item, String> {
+@Repository
+public interface ItemRepository extends CrudRepository<Item, String> {
 }
 

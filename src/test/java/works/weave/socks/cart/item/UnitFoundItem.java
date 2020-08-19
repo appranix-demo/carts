@@ -17,7 +17,7 @@ public class UnitFoundItem {
         String testId = "testId";
         Item testAnswer = new Item(testId);
         list.add(testAnswer);
-        FoundItem foundItem = new FoundItem(() -> list, () -> testAnswer);
+        FoundItem foundItem = new FoundItem(list, testAnswer);
         assertThat(foundItem.get(), is(equalTo(testAnswer)));
     }
 }
