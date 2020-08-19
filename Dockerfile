@@ -1,4 +1,4 @@
-FROM weaveworksdemos/msd-java:jre-latest
+FROM java:openjdk-8-alpine
 
 WORKDIR /usr/src/app
 COPY ./target/*.jar ./app.jar
