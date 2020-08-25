@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import works.weave.socks.cart.cart.CartDAO;
 import works.weave.socks.cart.cart.CartResource;
+import works.weave.socks.cart.entities.Cart;
 import works.weave.socks.cart.entities.Item;
 import works.weave.socks.cart.item.FoundItem;
 import works.weave.socks.cart.item.ItemDAO;
@@ -53,7 +54,7 @@ public class ItemsController {
             return item;
         } else {
             Item newItem = new Item(foundItem.get(), foundItem.get().quantity() + 1);
-            LOG.debug("Found item in cart. Incrementing for user: " + customerId + ", " + newItem);
+            LOG.info("Found item in cart. Incrementing for user: " + customerId + ", " + newItem);
             updateItem(customerId, newItem);
             return newItem;
         }
@@ -77,7 +78,13 @@ public class ItemsController {
     public void updateItem(@PathVariable String customerId, @RequestBody Item item) {
         // Merge old and new items
         ItemResource itemResource = new ItemResource(itemDAO, () -> get(customerId, item.itemId()));
-        LOG.debug("Merging item in cart for user: " + customerId + ", " + item);
+        LOG.info("Merging item in cart for user: " + customerId + ", " + item);
         itemResource.merge(item).run();
+        List<Item> items = new CartResource(cartDAO, customerId).contents().get().contents().get();
+        Item existingItem = items.stream()
+                .filter(item1 -> item1.getItemId().equals(item.getItemId()))
+                .findFirst().orElse(item);
+        new CartResource(cartDAO, customerId).contents().get().delete(() -> existingItem).run();
+        new CartResource(cartDAO, customerId).contents().get().add(() -> item).run();
     }
 }

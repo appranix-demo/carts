@@ -8,8 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import works.weave.socks.cart.cart.CartDAO;
+import works.weave.socks.cart.cart.FakeCartDAO;
 import works.weave.socks.cart.entities.Cart;
 import works.weave.socks.cart.entities.Item;
+import works.weave.socks.cart.item.FakeItemDAO;
 import works.weave.socks.cart.item.ItemDAO;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -85,12 +87,12 @@ public class UnitCartsController {
 
         @Bean
         public ItemDAO itemDAO() {
-            return new ItemDAO.Fake();
+            return new FakeItemDAO();
         }
 
         @Bean
         public CartDAO cartDAO() {
-            return new CartDAO.Fake();
+            return new FakeCartDAO();
         }
     }
 }

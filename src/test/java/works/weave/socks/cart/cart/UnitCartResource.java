@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class UnitCartResource {
 
     private final String customerId = "testId";
-    private final CartDAO.Fake fake = new CartDAO.Fake();
+    private final CartDAO fake = new FakeCartDAO();
 
     @Test
     public void whenCartExistsUseThat() {

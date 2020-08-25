@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 
 
 public class UnitItemResource {
-    private ItemDAO itemDAO = new ItemDAO.Fake();
+    private ItemDAO itemDAO = new FakeItemDAO();
 
     @Test
     public void testCreateAndDestroy() {
